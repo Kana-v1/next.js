@@ -7,14 +7,16 @@ import Date from '../components/date'
 import { GetStaticProps } from 'next'
 
 export default function Home({
-  allPostsData
+  allPostsDataStr
 }: {
-  allPostsData: {
-    date: string
-    title: string
-    id: string
-  }[]
+  allPostsDataStr: string 
 }) {
+  const allPostsData: {
+    date: string
+    contentHtml: string
+    id: string
+  }[] = JSON.parse(allPostsDataStr)
+
   return (
     <Layout home>
       <Head>
@@ -30,9 +32,9 @@ export default function Home({
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
-          {allPostsData.map(({ id, date, title }) => (
+          {allPostsData.map(({ id, date, contentHtml }) => (
             <li className={utilStyles.listItem} key={id}>
-              <Link href={`/posts/${id}`}>{title}</Link>
+              <Link href={`/posts/${id}`}>{id}</Link>
               <br />
               <small className={utilStyles.lightText}>
                 <Date dateString={date} />
@@ -46,10 +48,11 @@ export default function Home({
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = getSortedPostsData()
+  const allPostsData = await getSortedPostsData()
+  const allPostsDataStr: string = JSON.stringify(allPostsData)
   return {
     props: {
-      allPostsData
+      allPostsDataStr
     }
   }
 }
