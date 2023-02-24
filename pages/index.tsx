@@ -13,8 +13,8 @@ export default function Home({
 }) {
   const allPostsData: {
     date: string
-    contentHtml: string
-    id: string
+    htmltext: string
+    title: string
   }[] = JSON.parse(allPostsDataStr)
 
   return (
@@ -32,9 +32,9 @@ export default function Home({
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
-          {allPostsData.map(({ id, date, contentHtml }) => (
-            <li className={utilStyles.listItem} key={id}>
-              <Link href={`/posts/${id}`}>{id}</Link>
+          {allPostsData.map(({ title, date, htmltext }) => (
+            <li className={utilStyles.listItem} key={title}>
+              <Link href={`/posts/${title}`}>{title}</Link>
               <br />
               <small className={utilStyles.lightText}>
                 <Date dateString={date} />

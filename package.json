@@ -6,10 +6,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "@prisma/client": "^4.10.1",
     "date-fns": "^2.29.3",
     "gray-matter": "^4.0.3",
     "next": "latest",
     "pg": "^8.9.0",
+    "prisma": "^4.10.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "remark": "^14.0.2",
