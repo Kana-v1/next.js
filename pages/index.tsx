@@ -5,17 +5,25 @@ import { getSortedPostsData } from '../lib/posts'
 import Link from 'next/link'
 import Date from '../components/date'
 import { GetStaticProps } from 'next'
+import { trpc } from '../utils/trpc';
+import { useEffect, useState } from "react";
+import { Prisma } from "@prisma/client";
 
-export default function Home({
-  allPostsDataStr
-}: {
-  allPostsDataStr: string 
-}) {
-  const allPostsData: {
-    date: string
-    htmltext: string
-    title: string
-  }[] = JSON.parse(allPostsDataStr)
+
+
+export default function Home() {
+
+  const postWithNoArguments = Prisma.validator<Prisma.postsArgs>()({})
+  type postType = Prisma.postsGetPayload<typeof postWithNoArguments>
+
+  const [posts, setPosts] = useState<postType[]>([])
+  let pdBuf = trpc.sortedPostData.useQuery()
+
+  useEffect(() => {
+    pdBuf.refetch().then(d => {
+      setPosts(d.data.data)
+    })
+  }, [])
 
   return (
     <Layout home>
@@ -32,7 +40,7 @@ export default function Home({
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
-          {allPostsData.map(({ title, date, htmltext }) => (
+          {posts.map(({ title, date, htmltext }) => (
             <li className={utilStyles.listItem} key={title}>
               <Link href={`/posts/${title}`}>{title}</Link>
               <br />
@@ -45,14 +53,4 @@ export default function Home({
       </section>
     </Layout>
   )
-}
-
-export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = await getSortedPostsData()
-  const allPostsDataStr: string = JSON.stringify(allPostsData)
-  return {
-    props: {
-      allPostsDataStr
-    }
-  }
 }
