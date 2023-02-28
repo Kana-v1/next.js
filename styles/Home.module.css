@@ -89,3 +89,23 @@
     flex-direction: column;
   }
 }
+
+.listSpan {
+  width: 100%;
+}
+
+.link {
+  display: inline-block;
+  width: 85%;
+}
+
+.icon {
+  margin-left: 10px;
+}
+
+.icon:hover {
+  cursor: pointer;
+}
+
+
+
