@@ -41,7 +41,7 @@ class PostRepository {
     async getPostData(id: string): Promise<post | null> {
         const post = await this.prisma.posts.findFirst({
             where: {
-                title: id
+                id: Number(id)
             }
         })
 

@@ -13,6 +13,7 @@ export const procedures = router({
     )
     .query(async ({ input }) => {
       const data = await postRepo.getPostData(input.id)
+
       return {
         data: data,
       };

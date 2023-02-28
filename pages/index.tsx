@@ -39,7 +39,6 @@ export default function Home() {
 
     pdBuf.refetch().then(d => {
       setPosts(d.data ? d.data.data : new Array<post>)
-      console.log('posts have been set')
     })
   }, [postAction])
 
@@ -73,7 +72,7 @@ export default function Home() {
             <li className={utilStyles.listItem} key={id}>
               <span className={HomeStyles.listSpan}>
 
-                <Link className={HomeStyles.link} href={`/posts/${title}`}>{title}</Link>
+                <Link className={HomeStyles.link} href={`/posts/${id}`}>{title}</Link>
                 <Image src="/images/trash.png"
                   className={HomeStyles.icon}
                   width={20}
