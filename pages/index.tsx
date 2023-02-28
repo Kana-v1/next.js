@@ -20,26 +20,30 @@ export default function Home() {
   const createMutation = trpc.createNewPost.useMutation()
 
   useEffect(() => {
+    let promises = new Array<Promise<void>>()
     switch (postAction.action) {
       case Action.delete: {
-        deleteMutation.mutateAsync({ id: postAction.id })
+        promises.push(deleteMutation.mutateAsync({ id: postAction.id }))
         break
       }
 
       case Action.copy: {
-        createMutation.mutateAsync({
+        promises.push(createMutation.mutateAsync({
           title: postAction.title,
           date: postAction.date,
           htmlText: postAction.htmlText
-        })
+        }))
 
         break
       }
     }
 
-    pdBuf.refetch().then(d => {
-      setPosts(d.data ? d.data.data : new Array<post>)
+    Promise.allSettled(promises).then(() => {
+      pdBuf.refetch().then(d => {
+        setPosts(d.data ? d.data.data : new Array<post>)
+      })
     })
+
   }, [postAction])
 
 
