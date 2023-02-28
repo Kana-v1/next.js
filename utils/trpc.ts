@@ -1,11 +1,11 @@
 import { httpBatchLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
-import type { AppRouter } from '../server/routers/_app';
+import type { Procedures } from '../server/trpc_procedures/_app';
 import superjson from 'superjson';
 
 
-export const trpc = createTRPCNext<AppRouter>({
-    config({ ctx }) {
+export const trpc = createTRPCNext<Procedures>({
+    config() {
         return {
             links: [
                 httpBatchLink({

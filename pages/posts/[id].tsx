@@ -1,11 +1,10 @@
 import Layout from '../../components/layout'
-import { getAllPostIds, getPostData } from '../../lib/posts'
+import { getAllPostIds, getPostData } from '../../prisma/repository/post_repository'
 import Head from 'next/head'
 import Date from '../../components/date'
 import utilStyles from '../../styles/utils.module.css'
-import { GetStaticProps, GetStaticPaths } from 'next'
-
-
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
+import { trpc } from '../../utils/trpc';
 
 
 export default function Post({ postData }: {
@@ -31,20 +30,18 @@ export default function Post({ postData }: {
   )
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = await getAllPostIds()
-  return {
-    paths,
-    fallback: false
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  if (!params) {
+    return {
+      props: {
+      }
+    }
   }
-}
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const postData = await getPostData(params?.id as string)
-
+  const postData = await getPostData(params.id as string)
   return {
     props: {
       postData
     }
   }
-}
+};
